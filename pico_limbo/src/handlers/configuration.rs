@@ -5,6 +5,7 @@ use crate::server::client_state::ClientState;
 use crate::server::game_mode::GameMode;
 use crate::server::packet_handler::{PacketHandler, PacketHandlerError};
 use crate::server::packet_registry::PacketRegistry;
+use crate::server_brand::SERVER_BRAND;
 use crate::server_state::{ServerCommand, ServerState, TabList, Title, TitleType};
 use minecraft_packets::configuration::acknowledge_finish_configuration_packet::AcknowledgeConfigurationPacket;
 use minecraft_packets::login::Property;
@@ -192,7 +193,7 @@ pub fn send_play_packets(
     // The brand is not visible for clients prior to 1.13, no need to send it
     // The brand is sent during the configuration state after 1.20.2 included
     if protocol_version.between_inclusive(ProtocolVersion::V1_13, ProtocolVersion::V1_20) {
-        let packet = PlayClientBoundPluginMessagePacket::brand("PicoLimbo");
+        let packet = PlayClientBoundPluginMessagePacket::brand(SERVER_BRAND);
         batch.queue(|| PacketRegistry::PlayClientBoundPluginMessage(packet));
     }
 

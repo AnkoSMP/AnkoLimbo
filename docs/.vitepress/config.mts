@@ -30,6 +30,7 @@ export default defineConfig({
 					{ text: "FAQ", link: "/about/faq.html" },
 					{ text: "Benchmarks", link: "/about/benchmarks.html" },
 					{ text: "Community Projects", link: "/about/community-projects.html" },
+					{ text: "Troubleshooting", link: "/about/troubleshooting.html" },
 				],
 			},
 			{
@@ -63,6 +64,13 @@ export default defineConfig({
 				items: [
 					{ text: "Convert Schematics", link: "/tutorials/schematic-conversion.html" },
 					{ text: "Fallback Server", link: "/tutorials/fallback-server.html" },
+					{ text: "Authentication", link: "/tutorials/authentication.html" },
+				],
+			},
+			{
+				text: "Developer",
+				items: [
+					{ text: "Customizing Server Brand", link: "/developer/customizing-server-brand.html" },
 				],
 			},
 		],

@@ -2,6 +2,7 @@ use crate::server::batch::Batch;
 use crate::server::client_state::ClientState;
 use crate::server::packet_handler::{PacketHandler, PacketHandlerError};
 use crate::server::packet_registry::PacketRegistry;
+use crate::server_brand::SERVER_BRAND;
 use crate::server_state::ServerState;
 use minecraft_packets::configuration::client_bound_known_packs_packet::ClientBoundKnownPacksPacket;
 use minecraft_packets::configuration::configuration_client_bound_plugin_message_packet::ConfigurationClientBoundPluginMessagePacket;
@@ -44,7 +45,7 @@ fn send_configuration_packets(
     let registry_provider = PrecomputedRegistries::new(protocol_version);
 
     // Send Server Brand
-    let packet = ConfigurationClientBoundPluginMessagePacket::brand("PicoLimbo");
+    let packet = ConfigurationClientBoundPluginMessagePacket::brand(SERVER_BRAND);
     batch.queue(|| PacketRegistry::ConfigurationClientBoundPluginMessage(packet));
 
     if protocol_version.is_after_inclusive(ProtocolVersion::V1_20_5) {
