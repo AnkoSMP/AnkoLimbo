@@ -59,6 +59,11 @@ impl<T: Send + 'static> Batch<T> {
             current: Current::Idle,
         }
     }
+
+    /// Appends another `Batch`'s producers to `self`, consuming `other`.
+    pub fn append(&mut self, mut other: Batch<T>) {
+        self.producers.append(&mut other.producers);
+    }
 }
 
 enum Current<T> {

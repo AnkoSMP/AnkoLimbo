@@ -46,13 +46,13 @@ impl PacketHandler for SetPlayerPositionAndRotationPacket {
         }
 
         // update position and handle out-of-bounds teleporting
-        let mut out_batch = teleport_player_to_spawn_out_of_bounds(
+        let out_batch = teleport_player_to_spawn_out_of_bounds(
             client_state,
             server_state,
             self.feet_y,
         );
         client_state.set_position(self.x, self.feet_y, self.z);
-        batch.extend(out_batch);
+        batch.append(out_batch);
         Ok(batch)
     }
 }
