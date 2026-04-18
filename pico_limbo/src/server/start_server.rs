@@ -128,6 +128,7 @@ fn build_state(cfg: Config) -> Result<ServerState, ServerStateBuilderError> {
         .set_allow_unsupported_versions(cfg.allow_unsupported_versions)
         .set_allow_flight(cfg.allow_flight)
         .set_accept_transfers(cfg.accept_transfers)
+        .afk_mode(cfg.afk_mode)
         .server_commands(cfg.commands);
 
     server_state_builder.build()

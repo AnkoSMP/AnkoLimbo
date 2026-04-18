@@ -17,6 +17,7 @@ use std::sync::atomic::{AtomicU32, Ordering};
 use std::time::Duration;
 use thiserror::Error;
 use tracing::debug;
+use crate::configuration::afk_mode::AfkModeConfig;
 
 mod server_commands;
 
@@ -110,6 +111,7 @@ pub struct ServerState {
     accept_transfers: bool,
     allow_unsupported_versions: bool,
     allow_flight: bool,
+    afk_mode: AfkModeConfig,
     server_commands: ServerCommands,
 }
 
@@ -258,6 +260,14 @@ impl ServerState {
         self.accept_transfers
     }
 
+    pub const fn afk_mode(&self) -> &AfkModeConfig {
+        // SAFETY: always set by builder
+        // return reference to a stored AfkModeConfig inside ServerState
+        // because AfkModeConfig is Clone and small, we'll store it in an Option and unwrap here
+        // (field added in builder below)
+        &self.afk_mode
+    }
+
     pub const fn server_commands(&self) -> &ServerCommands {
         &self.server_commands
     }
@@ -302,6 +312,7 @@ pub struct ServerStateBuilder {
     allow_unsupported_versions: bool,
     allow_flight: bool,
     accept_transfers: bool,
+    afk_mode: AfkModeConfig,
     server_commands: ServerCommands,
 }
 
@@ -574,6 +585,11 @@ impl ServerStateBuilder {
         self
     }
 
+    pub fn afk_mode(&mut self, afk: AfkModeConfig) -> &mut Self {
+        self.afk_mode = afk;
+        self
+    }
+
     /// Finish building, returning an error if any required fields are missing.
     pub fn build(self) -> Result<ServerState, ServerStateBuilderError> {
         let world = if self.schematic_file_path.is_empty() {
@@ -618,6 +634,7 @@ impl ServerStateBuilder {
             allow_unsupported_versions: self.allow_unsupported_versions,
             allow_flight: self.allow_flight,
             accept_transfers: self.accept_transfers,
+            afk_mode: self.afk_mode,
             server_commands: self.server_commands,
         })
     }

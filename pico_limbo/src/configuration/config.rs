@@ -1,6 +1,7 @@
 use crate::configuration::boss_bar::BossBarConfig;
 use crate::configuration::commands::CommandsConfig;
 use crate::configuration::compression::CompressionConfig;
+use crate::configuration::afk_mode::AfkModeConfig;
 use crate::configuration::env_placeholders::{EnvPlaceholderError, expand_env_placeholders};
 use crate::configuration::forwarding::ForwardingConfig;
 use crate::configuration::game_mode_config::GameModeConfig;
@@ -77,6 +78,8 @@ pub struct Config {
     pub title: TitleConfig,
 
     pub commands: CommandsConfig,
+
+    pub afk_mode: AfkModeConfig,
 }
 
 impl Default for Config {
@@ -100,6 +103,7 @@ impl Default for Config {
             allow_flight: false,
             accept_transfers: false,
             commands: CommandsConfig::default(),
+            afk_mode: AfkModeConfig::default(),
         }
     }
 }

@@ -2,6 +2,7 @@ use crate::server::game_profile::GameProfile;
 use minecraft_packets::login::Property;
 use minecraft_protocol::prelude::{ProtocolVersion, State, Uuid};
 use tracing::info;
+use std::time::Instant;
 
 #[derive(PartialEq, Eq)]
 pub enum KeepAliveStatus {
@@ -20,9 +21,12 @@ impl Default for ClientState {
             game_profile: None,
             keep_alive_enabled: KeepAliveStatus::Disabled,
             feet_y: 0.0,
+            feet_x: 0.0,
+            feet_z: 0.0,
             is_flight_allowed: false,
             is_flying: false,
             flying_speed: 0.05,
+            last_move_instant: None,
         }
     }
 }
@@ -35,9 +39,13 @@ pub struct ClientState {
     game_profile: Option<GameProfile>,
     keep_alive_enabled: KeepAliveStatus,
     feet_y: f64,
+    feet_x: f64,
+    feet_z: f64,
     is_flight_allowed: bool,
     is_flying: bool,
     flying_speed: f32,
+    // Movement tracking for AFK-mode
+    last_move_instant: Option<Instant>,
 }
 
 impl ClientState {
@@ -150,6 +158,28 @@ impl ClientState {
 
     pub const fn set_feet_position(&mut self, feet_y: f64) {
         self.feet_y = feet_y;
+    }
+
+    pub const fn get_position(&self) -> (f64, f64, f64) {
+        (self.feet_x, self.feet_y, self.feet_z)
+    }
+
+    pub fn set_position(&mut self, x: f64, feet_y: f64, z: f64) {
+        self.feet_x = x;
+        self.feet_y = feet_y;
+        self.feet_z = z;
+    }
+
+    pub fn clear_move_timer(&mut self) {
+        self.last_move_instant = None;
+    }
+
+    pub fn note_movement(&mut self) -> Option<Instant> {
+        self.last_move_instant
+    }
+
+    pub fn set_move_instant(&mut self, t: Instant) {
+        self.last_move_instant = Some(t);
     }
 
     // Movement

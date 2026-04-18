@@ -10,5 +10,7 @@ mod server_list;
 pub mod tab_list;
 pub mod title;
 pub mod world_config;
+pub mod afk_mode;
 
 pub use forwarding::TaggedForwarding;
+pub use afk_mode::AfkModeConfig;
